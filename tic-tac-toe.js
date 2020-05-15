@@ -55,8 +55,34 @@ function resetGame () {
 }
 
 let player = 0;
+let stoppedGame;
+
 window.addEventListener("DOMContentLoaded", event =>{
-    play = 0;
+    let square;
+//    play = 0;
+//    stoppedGame = JSON.parse(localStorage.getItem("stoppedGame"));
+    play = JSON.parse(localStorage.getItem("play"));
+    if(play !== null){
+        bothArrays = JSON.parse(localStorage.getItem("bothArrays"));
+        boardArray = JSON.parse(localStorage.getItem("boardArray"));
+        haveWinner = JSON.parse(localStorage.getItem("haveWinner"));
+        tieGame = JSON.parse(localStorage.getItem("tieGame"));
+
+        player = play%2;
+
+        //newGameButton
+        //giveUpButton
+        // header
+        for (let i = 0 ; i < 8 ; i ++){
+            let square = document.getElementById(`square-${i}`);
+            for (let player = 0 ; player < 2 ; player++){
+                    for (let j = 0 ; j < bothArrays[0].length; j ++){
+                        square.innerHTML = XO[player];
+                    }
+            }
+        }
+    }
+    //Have to put to local storage from here to 125
 
     document.getElementById("tic-tac-toe-board").addEventListener("click", event =>{
         // console.log(`This is the target ${event.target.id}`);
@@ -73,7 +99,7 @@ window.addEventListener("DOMContentLoaded", event =>{
         bothArrays[player].sort();
         boardArray[squareId] = true;
         // console.log("squareID = " + squareId);
-        let square = document.getElementById(`square-${squareId}`);
+        square = document.getElementById(`square-${squareId}`);
         // console.log(square);
         square.innerHTML = XO[player];
         // console.log(bothArrays);
@@ -95,6 +121,13 @@ window.addEventListener("DOMContentLoaded", event =>{
       }
     }
     });
+
+    localStorage.setItem("bothArrays", bothArrays);
+    localStorage.setItem("boardArray", boardArray);
+    localStorage.setItem("haveWinner", haveWinner);
+    localStorage.setItem("tieGame", tieGame);
+    localStorage.setItem("play", play);
+
     newGameButton.addEventListener("click", () => {
         resetGame();
     })
